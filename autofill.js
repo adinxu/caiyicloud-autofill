@@ -53,7 +53,6 @@ function refresh_and_enter() {
     }
 }
 
-
 function fill_info_and_submit() {
     //second stage
     let ele_add_person_btn = "#__layout > div > div > div.person-box > div.person-msg > div > div.add-person"
@@ -68,6 +67,7 @@ function fill_info_and_submit() {
         console.log("second stage not process");
     }
 }
+
 function fill_info_and_submit_real(){
     let ele_name = "#__layout > div > div > div.person-box > div.person-msg > div > div.viewer-form-box > div > div.view_form_container > div:nth-child(1) > input";
     let ele_num = "#__layout > div > div > div.person-box > div.person-msg > div > div.viewer-form-box > div > div.view_form_container > div:nth-child(3) > input";
@@ -76,13 +76,8 @@ function fill_info_and_submit_real(){
     let num = document.querySelector(ele_num);
     let submit_btn = document.querySelector(ele_submit_btn);
     if(name && num && submit_btn){
-        name.value = "张三";
-        let event = document.createEvent('HTMLEvents');
-        event.initEvent("input", true, true);
-        event.eventType = 'message';
-        name.dispatchEvent(event);
-        num.value = "370728195508183628";
-        num.dispatchEvent(event);
+        try_to_fill_input_use_event(name, "张三");
+        try_to_fill_input_use_event(num, "370728195508183628");
         submit_btn.click();
     }
 }
@@ -108,4 +103,18 @@ async function check_wait_state(tval) {
     }else{
         console.log("error!!!!!!!!")
     }
+}
+
+function try_to_fill_input_use_event(input, str_to_fill){
+    input.value = str_to_fill;
+    let input_event = document.createEvent('HTMLEvents');
+    input_event.initEvent("input", true, true);
+    input_event.eventType = 'message';
+    input.dispatchEvent(input_event);
+}
+
+function try_to_fill_input_use_focus(input, str_to_fill){
+    input.focus();
+    document.execCommand('inserttext',false,str_to_fill);
+    input.blur(); //失去焦点
 }
